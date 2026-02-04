@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invisible Infra — Detect hidden infrastructure failures</title>
+  <meta name="description" content="Invisible Infra is a physics-aware AI platform that detects hidden failures and losses in water, power, and gas networks using satellite imagery and climate data—without installing sensors." />
+  <meta property="og:title" content="Invisible Infra" />
+  <meta property="og:description" content="Detect hidden infrastructure failures without installing sensors." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+/* Invisible Infra — single-page landing site
+   Clean, minimal, responsive. */
+
+:root{
+  --bg: #f3f6fb;
+  --card: #ffffff;
+  --text: #0b1220;
+  --muted: #334155;
+  --muted2: #475569;
+  --border: rgba(15, 23, 42, 0.14);
+  --blue: #0b6fb3;
+  --blue2:#0a5ea0;
+  --green:#1e8e3e;
+  --green2:#167a33;
+  --accent: var(--blue);
+  --accent2: var(--green);
+  --shadow: 0 10px 24px rgba(2, 18, 48, 0.10);
+  --radius: 14px;
+  --radius2: 18px;
+}
+
+
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height:1.55;
+}
+
+a{ color:inherit; text-decoration:none; }
+.container{
+  width:min(1120px, calc(100% - 40px));
+  margin:0 auto;
+}
+
+
+/* ===== LMIS-like layout additions ===== */
+
+.topbar{
+  background: var(--blue);
+  color: #fff;
+  font-size: 13px;
+}
+.topbar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 10px 0;
+  gap: 12px;
+}
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  flex-wrap:wrap;
+}
+.topbar .muted{ color: rgba(255,255,255,0.92); }
+.sep{ color: rgba(255,255,255,0.6); }
+.toplink{
+  color:#fff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.toplink:hover{ background: rgba(255,255,255,0.12); }
+
+.nav2-wrap{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background: #fff;
+  border-bottom: 1px solid rgba(15,23,42,0.10);
+}
+.nav2{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 0;
+  gap: 14px;
+}
+.brand2{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  min-width: 240px;
+}
+.logo-mark{
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(11,111,179,0.10);
+  border: 1px solid rgba(11,111,179,0.22);
+  display:grid;
+  place-items:end center;
+  padding: 9px 10px;
+  gap:4px;
+}
+.logo-mark .bar{
+  display:block;
+  width: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+}
+.logo-mark .b1{ height: 6px; opacity: .95; }
+.logo-mark .b2{ height: 10px; opacity: .90; }
+.logo-mark .b3{ height: 14px; opacity: .85; }
+
+.brand2-text{ line-height:1.1; }
+.brand2-name{ font-weight: 900; letter-spacing:-0.01em; }
+.brand2-sub{ font-size: 12px; color: var(--muted2); font-weight: 700; margin-top:4px; }
+
+.nav2-links{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+.nav2-links a{
+  padding: 10px 10px;
+  border-radius: 12px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 14px;
+}
+.nav2-links a:hover{ background: rgba(11,111,179,0.08); color: var(--text); }
+.nav2-links a.active{ color: var(--green); }
+.nav2-links .btn.small{ margin-left: 6px; }
+
+.banner{
+  position:relative;
+  min-height: 420px;
+  display:flex;
+  align-items:stretch;
+  margin-bottom: 8px;
+}
+.banner-bg{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(4, 28, 61, 0.70), rgba(4,28,61,0.35)),
+    radial-gradient(900px 600px at 75% 35%, rgba(11,111,179,0.35), transparent 55%),
+    radial-gradient(700px 520px at 25% 70%, rgba(30,142,62,0.30), transparent 55%),
+    none;
+  background-size: cover;
+  background-position: center;
+}
+.banner-inner{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 18px;
+  align-items:center;
+  padding: 46px 0;
+}
+.banner-kicker{
+  color: rgba(255,255,255,0.75);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+}
+.banner-title{
+  color:#fff;
+  margin: 10px 0 2px;
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 1.04;
+  letter-spacing:-0.03em;
+}
+.banner-subtitle{
+  color:#fff;
+  margin: 0 0 10px;
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 900;
+  letter-spacing:-0.02em;
+}
+.banner-text{
+  color: rgba(255,255,255,0.86);
+  max-width: 64ch;
+  margin: 0 0 16px;
+}
+.banner-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+.update-card{
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(255,255,255,0.60);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+  overflow:hidden;
+}
+.update-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 14px;
+  border-bottom: 1px solid rgba(15,23,42,0.10);
+}
+.update-badge{
+  background: rgba(30,142,62,0.12);
+  color: var(--green);
+  border: 1px solid rgba(30,142,62,0.25);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+}
+.update-cta{
+  background: var(--green);
+  color:#fff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 13px;
+}
+.update-cta:hover{ background: var(--green2); }
+.update-body{ padding: 14px 14px 16px; }
+.update-title{
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing:-0.02em;
+  margin-bottom: 6px;
+}
+.update-desc{ color: var(--muted); margin-bottom: 12px; }
+.update-actions{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+.iconbtn{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(15,23,42,0.12);
+  background: rgba(255,255,255,0.9);
+  cursor:pointer;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--blue2);
+}
+.iconbtn:hover{ background: rgba(11,111,179,0.08); }
+.dots{ display:flex; gap:6px; justify-content:center; margin-top: 12px; }
+.dot{
+  width: 8px; height: 8px; border-radius: 999px;
+  background: rgba(15,23,42,0.20);
+}
+.dot.active{ background: var(--green); }
+
+/* Adjust existing buttons to match LMIS palette */
+.btn{
+  border: 1px solid rgba(255,255,255,0.16);
+  background: var(--blue);
+  box-shadow: 0 10px 22px rgba(2,18,48,0.12);
+}
+.btn:hover{ background: var(--blue2); }
+.btn.ghost{
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.16);
+  color:#fff;
+}
+.btn.small{
+  background: var(--blue);
+  border: 1px solid rgba(15,23,42,0.10);
+  color:#fff;
+}
+.btn.small.ghost{
+  background: rgba(11,111,179,0.10);
+  color: var(--blue2);
+  border: 1px solid rgba(11,111,179,0.22);
+}
+
+/* Remove old hero spacing effects */
+.hero{ display:none; }
+
+/* Responsive for banner/nav */
+@media (max-width: 960px){
+  .banner-inner{ grid-template-columns: 1fr; }
+  .nav2-links{
+    position:absolute;
+    right: 20px;
+    top: 68px;
+    width: min(340px, calc(100% - 40px));
+    display:none;
+    flex-direction:column;
+    align-items:stretch;
+    padding:10px;
+    border-radius: 18px;
+    border:1px solid rgba(15,23,42,0.12);
+    background: rgba(255,255,255,0.96);
+    box-shadow: var(--shadow);
+  }
+  .nav2-links.open{ display:flex; }
+  .btn.ghost{ color:#fff; }
+}
+
+
+.nav-wrap{
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter: blur(14px);
+  background: rgba(245,247,251,0.82);
+  border-bottom:1px solid rgba(15,23,42,0.08);
+}
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 0;
+  gap:16px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+  letter-spacing:0.2px;
+}
+.brand-dot{
+  width:10px; height:10px;
+  border-radius:999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 0 4px rgba(11,94,215,0.10);
+}
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.nav-links a{
+  padding:10px 10px;
+  border-radius:12px;
+  color: var(--muted);
+  font-weight:600;
+  font-size:14px;
+}
+.nav-links a:hover{
+  color: var(--text);
+  background: rgba(255,255,255,0.80);
+}
+.nav-toggle{
+  display:none;
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,0.85);
+  cursor:pointer;
+}
+.nav-toggle span{
+  display:block;
+  height:2px;
+  width:18px;
+  background: rgba(255,255,255,0.86);
+  margin:5px auto;
+  border-radius:99px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: linear-gradient(135deg, rgba(11,94,215,0.14), rgba(24,169,87,0.14));
+  color: var(--text);
+  font-weight:700;
+  font-size:14px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.22);
+}
+.btn:hover{
+  transform: translateY(-1px);
+  transition: 120ms ease;
+}
+.btn.ghost{
+  background: rgba(255,255,255,0.80);
+}
+.btn.small{
+  padding:10px 12px;
+  border-radius:12px;
+  font-size:13px;
+}
+
+.hero{
+  padding: 42px 0 12px;
+  display:grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap:28px;
+  align-items:start;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,0.85);
+  border-radius:999px;
+  color: var(--muted);
+  font-weight:600;
+  font-size:13px;
+}
+
+h1{
+  margin:16px 0 10px;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height:1.06;
+  letter-spacing:-0.03em;
+}
+.accent{
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color: transparent;
+}
+
+.lead{
+  color: var(--muted);
+  font-size: 16px;
+  margin: 0 0 18px;
+  max-width: 64ch;
+}
+.hero-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom: 18px;
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap:12px;
+  margin-top: 18px;
+}
+.feature-card{
+  background: rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  padding:14px 14px 16px;
+  box-shadow: var(--shadow);
+}
+.feature-card .icon{
+  width:36px; height:36px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,0.85);
+  color: var(--text);
+  margin-bottom:10px;
+  font-weight:800;
+}
+.feature-card h3{
+  margin:0 0 6px;
+  font-size:15px;
+}
+.feature-card p{
+  margin:0;
+  color: var(--muted2);
+  font-size:13px;
+}
+
+.mini-metrics{
+  display:flex;
+  gap:10px;
+  margin-top: 14px;
+  flex-wrap:wrap;
+}
+.mini-metric{
+  padding:10px 12px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.78);
+}
+.kpi{
+  font-weight:800;
+  letter-spacing:-0.02em;
+}
+.kpi-sub{
+  color: var(--muted2);
+  font-size:12px;
+}
+
+.hero-right{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.mock-card{
+  background: rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius2);
+  padding:14px;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.mock-top{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.pill{
+  font-size:12px;
+  color: var(--muted);
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.78);
+}
+.mock-map{
+  position:relative;
+  height:220px;
+  border-radius: 18px;
+  background:
+    radial-gradient(800px 320px at 50% 70%, rgba(24,169,87,0.12), transparent 55%),
+    radial-gradient(700px 260px at 70% 30%, rgba(11,94,215,0.12), transparent 55%),
+    rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  overflow:hidden;
+}
+.map-line{
+  position:absolute;
+  height:2px;
+  background: linear-gradient(90deg, rgba(24,169,87,0.0), rgba(24,169,87,0.85), rgba(122,167,255,0.0));
+  opacity:0.9;
+  border-radius:99px;
+}
+.map-line.l1{ left:8%; right:12%; top:40%; transform: rotate(-8deg); }
+.map-line.l2{ left:12%; right:20%; top:62%; transform: rotate(12deg); }
+.map-line.l3{ left:18%; right:18%; top:50%; transform: rotate(2deg); }
+.map-dot{
+  position:absolute;
+  width:12px; height:12px;
+  border-radius:999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  box-shadow: 0 0 0 6px rgba(11,94,215,0.10);
+}
+.map-dot.d1{ left:20%; top:52%; }
+.map-dot.d2{ left:62%; top:40%; }
+.map-dot.d3{ left:74%; top:68%; }
+.map-dot.d4{ left:44%; top:60%; }
+
+.mock-bottom{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.stat{
+  display:flex;
+  gap:10px;
+  padding:12px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.78);
+}
+.stat-num{
+  width:34px; height:34px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,0.85);
+  font-weight:900;
+}
+.stat-text{
+  font-size:13px;
+  color: var(--muted);
+  line-height:1.25;
+}
+.stat-text span{
+  color: var(--muted2);
+  font-size:12px;
+}
+
+.note{
+  color: var(--muted);
+  font-size:13px;
+  padding:12px 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.78);
+}
+
+.section{
+  padding: 56px 0 0;
+}
+.section-head{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom: 18px;
+}
+.section-head h2{
+  margin:0;
+  font-size: 28px;
+  letter-spacing:-0.02em;
+}
+.section-head p{
+  margin:0;
+  color: var(--muted);
+  max-width: 78ch;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap:12px;
+}
+.card{
+  background: rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+}
+.card h3{
+  margin:0 0 8px;
+  font-size:16px;
+}
+.card p{
+  margin:0;
+  color: var(--muted2);
+  font-size:13px;
+}
+
+.split{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+  align-items:stretch;
+}
+.panel{
+  background: rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+}
+.panel h3{ margin:0 0 10px; font-size:16px; }
+.list{
+  margin:0;
+  padding-left:18px;
+  color: var(--muted);
+}
+.list li{ margin: 8px 0; }
+
+.timeline{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.trow{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+.tbadge{
+  flex: 0 0 auto;
+  font-size:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.78);
+  color: var(--muted);
+  font-weight:700;
+}
+.ttext{
+  color: var(--muted2);
+  font-size:13px;
+  padding-top:2px;
+}
+
+.compare{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  overflow:hidden;
+  box-shadow: var(--shadow);
+}
+.compare-row{
+  display:grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap:0;
+}
+.compare-row > div{
+  padding:12px 14px;
+  background: rgba(255,255,255,0.78);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+  font-size:13px;
+}
+.compare-row.head > div{
+  background: rgba(255,255,255,0.80);
+  color: var(--text);
+  font-weight:800;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+.compare-row:last-child > div{ border-bottom:none; }
+
+.steps{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap:12px;
+}
+.step{
+  background: rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+}
+.step-num{
+  width:32px; height:32px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,0.80);
+  border:1px solid var(--border);
+  font-weight:900;
+  margin-bottom:10px;
+}
+.step h3{ margin:0 0 6px; font-size:15px; }
+.step p{ margin:0; color: var(--muted2); font-size:13px; }
+
+.callout{
+  margin-top:12px;
+  padding:14px 16px;
+  border-radius: var(--radius);
+  border:1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(135deg, rgba(110,243,197,0.08), rgba(122,167,255,0.08));
+  box-shadow: var(--shadow);
+}
+.callout-title{
+  font-weight:900;
+  letter-spacing:-0.01em;
+  margin-bottom:4px;
+}
+.callout-text{
+  margin:0;
+  color: var(--muted);
+  font-size:13px;
+}
+
+.founder{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  background: rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+}
+.avatar{
+  width:44px; height:44px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  background: rgba(255,255,255,0.80);
+  border:1px solid var(--border);
+}
+.muted{ color: var(--muted); }
+.founder-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+
+.contact-grid{
+  display:grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap:12px;
+}
+.contact-card{
+  background: rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+}
+.form{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+label{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  color: var(--muted);
+  font-size:13px;
+  font-weight:600;
+}
+input, textarea{
+  width:100%;
+  padding:12px 12px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,0.92);
+  color: var(--text);
+  outline:none;
+  font-family: inherit;
+  font-size:14px;
+}
+input:focus, textarea:focus{
+  border-color: rgba(11,94,215,0.45);
+  box-shadow: 0 0 0 4px rgba(11,94,215,0.10);
+}
+.form-status{
+  margin-top:6px;
+  color: var(--muted);
+  font-size:13px;
+  min-height:18px;
+}
+.fineprint{
+  margin-top:10px;
+  color: var(--muted2);
+  font-size:12px;
+}
+.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+.footer{
+  margin-top: 56px;
+  padding: 22px 0;
+  border-top:1px solid rgba(15,23,42,0.10);
+  background: rgba(255,255,255,0.80);
+}
+.footer-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.footer-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+}
+
+/* Reveal animations */
+.reveal{
+  opacity:0;
+  transform: translateY(10px);
+  transition: opacity 520ms ease, transform 520ms ease;
+}
+.reveal.show{
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 960px){
+  .hero{ grid-template-columns: 1fr; }
+  .feature-grid{ grid-template-columns: 1fr; }
+  .cards{ grid-template-columns: 1fr; }
+  .split{ grid-template-columns: 1fr; }
+  .steps{ grid-template-columns: 1fr; }
+  .contact-grid{ grid-template-columns: 1fr; }
+  .nav-toggle{ display:block; }
+  .nav-links{
+    position:absolute;
+    right: 20px;
+    top: 64px;
+    width: min(320px, calc(100% - 40px));
+    display:none;
+    flex-direction:column;
+    align-items:stretch;
+    padding:10px;
+    border-radius: 18px;
+    border:1px solid var(--border);
+    background: rgba(255,255,255,0.96);
+    box-shadow: var(--shadow);
+  }
+  .nav-links.open{ display:flex; }
+  .nav-links a{ justify-content:flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .reveal{ transition:none; }
+  .btn:hover{ transform:none; }
+}
+
+</style>
+</head>
+<body>
+  <header class="nav-wrap">
+    <nav class="nav container">
+      <a class="brand" href="#top" aria-label="Invisible Infra home">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-text">Invisible Infra</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#difference">Why different</a>
+        <a href="#how">How it works</a>
+        <a href="#customers">Customers</a>
+        <a href="#why-now">Why now</a>
+        <a href="#founder">Founder</a>
+        
+        <a href="#contact" class="btn small ghost">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO BANNER -->
+    <section class="banner">
+      <div class="banner-bg" aria-hidden="true"></div>
+      <div class="container banner-inner">
+        <div class="banner-left reveal">
+          <div class="banner-kicker">WELCOME TO</div>
+          <h1 class="banner-title">Invisible Infra</h1>
+          <h2 class="banner-subtitle">Infrastructure Intelligence System</h2>
+          <p class="banner-text">
+            For intelligent and timely infrastructure insights. Invisible Infra detects hidden failures and losses in water, power,
+            and gas networks using satellite imagery and physics-aware AI — without installing sensors.
+          </p>
+          <div class="banner-actions">
+            <a class="btn" href="#contact">Request a pilot</a>
+            
+          </div>
+        </div>
+
+        <div class="banner-right reveal" aria-label="Updates card">
+          <div class="update-card">
+            <div class="update-top">
+              <span class="update-badge">Latest</span>
+              
+            </div>
+
+            <div class="update-body">
+              <div class="update-title" id="updateTitle">Pilot-ready infrastructure risk mapping</div>
+              <div class="update-desc" id="updateDesc">
+                Remote detection and prioritization of network hotspots—validated against historical incidents and work orders.
+              </div>
+              <div class="update-actions">
+                <a class="btn small" href="#solution">Read more</a>
+                <button class="iconbtn" id="prevUpdate" aria-label="Previous update">‹</button>
+                <button class="iconbtn" id="nextUpdate" aria-label="Next update">›</button>
+              </div>
+              <div class="dots" aria-hidden="true">
+                <span class="dot active" id="dot0"></span>
+                <span class="dot" id="dot1"></span>
+                <span class="dot" id="dot2"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section id="problem" class="section container">
+      <div class="section-head reveal">
+        <h2>Problem</h2>
+        <p>
+          Infrastructure networks are aging and under-monitored. Many utilities only find issues after service disruptions or expensive repairs.
+          Traditional monitoring requires costly hardware and years of deployment.
+        </p>
+      </div>
+
+      <div class="cards">
+        <div class="card reveal">
+          <h3>Hidden losses</h3>
+          <p>Leakage, degradation, and inefficiencies can persist for months without detection.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Cost of sensors</h3>
+          <p>Full coverage needs large sensor rollouts, maintenance, integration, and skilled teams.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Climate stress</h3>
+          <p>Extreme weather increases failure risk and accelerates wear—prediction matters more than ever.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="solution" class="section container">
+      <div class="section-head reveal">
+        <h2>Solution</h2>
+        <p>
+          Invisible Infra detects anomalies remotely using satellite imagery, environmental signals, and physics-aware ML.
+          It produces risk maps and a prioritized maintenance queue—without requiring new sensors.
+        </p>
+      </div>
+
+      <div class="split">
+        <div class="panel reveal">
+          <h3>What the platform delivers</h3>
+          <ul class="list">
+            <li>Network risk maps (leaks, losses, degradation hotspots)</li>
+            <li>Prioritized maintenance queue with confidence scores</li>
+            <li>Trend monitoring over time (improving / worsening segments)</li>
+            <li>Explainable drivers (weather, stress, demand patterns)</li>
+          </ul>
+        </div>
+
+        <div class="panel reveal">
+          <h3>What you get in weeks</h3>
+          <div class="timeline">
+            <div class="trow">
+              <span class="tbadge">Week 1</span>
+              <div class="ttext">Connect available public & customer datasets; set up baseline risk mapping.</div>
+            </div>
+            <div class="trow">
+              <span class="tbadge">Weeks 2–3</span>
+              <div class="ttext">Calibrate physics-aware models; validate on historical incidents & work orders.</div>
+            </div>
+            <div class="trow">
+              <span class="tbadge">Weeks 4–6</span>
+              <div class="ttext">Deliver actionable hotspots and maintenance prioritization with explainability.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="difference" class="section container">
+      <div class="section-head reveal">
+        <h2>Why it’s different</h2>
+        <p>
+          Most infrastructure monitoring depends on hardware deployment. Invisible Infra is designed to scale with remote signals and scientific constraints.
+        </p>
+      </div>
+
+      <div class="cards">
+        <div class="card reveal">
+          <h3>No new sensors required</h3>
+          <p>Leverages satellite + climate + network behavior to detect risk—reducing capex and rollout time.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Physics-aware modeling</h3>
+          <p>Uses physical constraints and network structure to improve robustness and reduce spurious alarms.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Built for decision-making</h3>
+          <p>Outputs maintenance priority, confidence, and “why” explanations to support real operational action.</p>
+        </div>
+      </div>
+
+      <div class="compare reveal" aria-label="Comparison table">
+        <div class="compare-row head">
+          <div></div>
+          <div>Traditional sensor-first</div>
+          <div>Invisible Infra</div>
+        </div>
+        <div class="compare-row">
+          <div>Deployment time</div>
+          <div>Months–years</div>
+          <div>Weeks</div>
+        </div>
+        <div class="compare-row">
+          <div>Coverage</div>
+          <div>Partial</div>
+          <div>City-scale</div>
+        </div>
+        <div class="compare-row">
+          <div>Upfront cost</div>
+          <div>High</div>
+          <div>Low</div>
+        </div>
+        <div class="compare-row">
+          <div>Explainability</div>
+          <div>Limited</div>
+          <div>Signals + drivers</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section container">
+      <div class="section-head reveal">
+        <h2>How it works</h2>
+        <p>A simple, four-step workflow—from remote signals to action.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <h3>Ingest</h3>
+          <p>Satellite imagery, climate, terrain, and available network/context data.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <h3>Model</h3>
+          <p>Physics-aware ML + graph models learn normal behavior and detect anomalies.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <h3>Detect</h3>
+          <p>Risk scores identify likely leaks, degradation hotspots, and loss patterns.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">4</div>
+          <h3>Prioritize</h3>
+          <p>Actionable queue + explanations to guide inspections and maintenance plans.</p>
+        </div>
+      </div>
+
+      <div class="callout reveal">
+        <div class="callout-title">Pilot-ready outcomes</div>
+        <p class="callout-text">Within a pilot, we validate against historical incidents and work orders, then deliver a weekly prioritized list of hotspots and drivers.</p>
+      </div>
+    </section>
+
+    <section id="customers" class="section container">
+      <div class="section-head reveal">
+        <h2>Who it’s for</h2>
+        <p>Primary customers and partners who benefit from faster, cheaper visibility into hidden losses.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card reveal">
+          <h3>Municipalities</h3>
+          <p>Improve resilience and reduce service disruption risk across aging city assets.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Utilities</h3>
+          <p>Detect losses, prioritize maintenance, and improve operational efficiency.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Infrastructure investors</h3>
+          <p>Quantify risk and prioritize capital allocation for better returns and resilience.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="why-now" class="section container">
+      <div class="section-head reveal">
+        <h2>Why now</h2>
+        <p>
+          Aging infrastructure, climate volatility, and rapidly improving earth-observation data make remote detection feasible now.
+          The market is actively looking for scalable, non-invasive solutions.
+        </p>
+      </div>
+
+      <div class="cards">
+        <div class="card reveal">
+          <h3>Data is ready</h3>
+          <p>Satellite and environmental datasets are more frequent and accessible than ever.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Budgets are tight</h3>
+          <p>Utilities need approaches that reduce capex and deliver faster ROI.</p>
+        </div>
+        <div class="card reveal">
+          <h3>Risk is rising</h3>
+          <p>Extreme weather accelerates degradation—prediction and prevention become essential.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="founder" class="section container">
+      <div class="section-head reveal">
+        <h2>Founder</h2>
+        <p>Early-stage venture; currently pre-incorporation.</p>
+      </div>
+
+      <div class="founder reveal">
+        <div class="avatar" aria-hidden="true">LU</div>
+        <div>
+          <h3>Liliane Umwanankabandi</h3>
+          <p class="muted">
+            Founder. Interested in building AI-driven systems that turn complex, real-world data into clear, actionable decisions.
+            Focused on scalable, responsible AI and real-world deployments.
+          </p>
+          <div class="founder-actions">
+            <a class="btn small" href="#contact">Contact</a>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section id="contact" class="section container">
+      <div class="section-head reveal">
+        <h2>Contact</h2>
+        <p>Reach out for pilots, partnerships, or program discussions.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-card reveal">
+          <h3>Email</h3>
+          <p class="muted">Use the button below to email directly.</p>
+          <a class="btn" href="mailto:u2001lily@gmail.com?subject=Invisible%20Infra%20—%20Inquiry">Email Invisible Infra</a>
+          <div class="fineprint">Or email: <span class="mono">u2001lily@gmail.com</span></div>
+        </div>
+
+        <div class="contact-card reveal">
+          <h3>Quick message</h3>
+          <p class="muted">This form is front-end only (no backend). It will show a confirmation message.</p>
+
+          <form id="contactForm" class="form" autocomplete="on">
+            <label>
+              Name
+              <input name="name" type="text" placeholder="Your name" required />
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" placeholder="you@example.com" required />
+            </label>
+            <label>
+              Message
+              <textarea name="message" rows="4" placeholder="Tell us what you need..." required></textarea>
+            </label>
+            <button type="submit" class="btn">Send message</button>
+            <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div class="footer-left">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span>Invisible Infra</span>
+        </div>
+        <div class="footer-right">
+          <span class="muted">© <span id="year"></span> Invisible Infra. All rights reserved.</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+// Invisible Infra — small interactions (mobile nav, scroll reveal, contact form demo)
+
+(function () {
+  const navToggle = document.getElementById("navToggle");
+  const navLinks = document.getElementById("navLinks");
+
+  function closeNav() {
+    if (!navLinks) return;
+    navLinks.classList.remove("open");
+    if (navToggle) navToggle.setAttribute("aria-expanded", "false");
+  }
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    // Close menu after clicking a link (mobile)
+    navLinks.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => closeNav());
+    });
+
+    // Close on outside click
+    document.addEventListener("click", (e) => {
+      const target = e.target;
+      if (!target) return;
+      const clickedInside = navLinks.contains(target) || navToggle.contains(target);
+      if (!clickedInside) closeNav();
+    });
+  }
+
+  // Reveal on scroll
+  const reveals = Array.from(document.querySelectorAll(".reveal"));
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("show");
+      });
+    },
+    { threshold: 0.12 }
+  );
+  reveals.forEach((el) => io.observe(el));
+
+  // Footer year
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  // Contact form (front-end only)
+  const form = document.getElementById("contactForm");
+  const status = document.getElementById("formStatus");
+
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (status) {
+        status.textContent = "Thanks — we’ll reach out shortly.";
+      }
+      // Reset after a moment to feel real
+      setTimeout(() => {
+        form.reset();
+      }, 900);
+    });
+  }
+})();
+
+
+// Updates carousel (simple)
+(function(){
+  const updates = [
+    {
+      title: "Pilot-ready infrastructure risk mapping",
+      desc: "Remote detection and prioritization of network hotspots—validated against historical incidents and work orders."
+    },
+    {
+      title: "Non-invasive loss detection at city scale",
+      desc: "Identify likely leakage and degradation using satellite imagery + climate signals—no sensor rollout required."
+    },
+    {
+      title: "Maintenance prioritization with explainable drivers",
+      desc: "Deliver a ranked queue with confidence scores and clear drivers (weather, terrain, demand patterns)."
+    }
+  ];
+
+  let i = 0;
+  const titleEl = document.getElementById("updateTitle");
+  const descEl  = document.getElementById("updateDesc");
+  const prevBtn = document.getElementById("prevUpdate");
+  const nextBtn = document.getElementById("nextUpdate");
+
+  function setDots(idx){
+    for(let d=0; d<3; d++){
+      const el = document.getElementById("dot"+d);
+      if(!el) continue;
+      el.classList.toggle("active", d===idx);
+    }
+  }
+
+  function render(idx){
+    if(titleEl) titleEl.textContent = updates[idx].title;
+    if(descEl)  descEl.textContent  = updates[idx].desc;
+    setDots(idx);
+  }
+
+  function prev(){ i = (i - 1 + updates.length) % updates.length; render(i); }
+  function next(){ i = (i + 1) % updates.length; render(i); }
+
+  if(prevBtn) prevBtn.addEventListener("click", prev);
+  if(nextBtn) nextBtn.addEventListener("click", next);
+
+  // auto-rotate
+  setInterval(() => {
+    i = (i + 1) % updates.length;
+    render(i);
+  }, 5500);
+
+  render(i);
+})();
+
+</script>
+</body>
+</html>
